@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Pickup.h"
 #include "FIT2097A2Character.generated.h"
 
 class UInputComponent;
@@ -50,6 +51,7 @@ public:
 
 protected:
 	virtual void BeginPlay();
+	virtual void Tick (float DeltaTime);
 
 public:
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
@@ -138,5 +140,50 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+
+	//***************************************************************************************************
+	//** Trace functions - used to detect items we are looking at in the world
+	//** Adapted from code found on the unreal wiki https://wiki.unrealengine.com/Trace_Functions
+	//***************************************************************************************************
+
+private:
+	bool Trace(
+		UWorld* World,
+		TArray<AActor*>& ActorsToIgnore,
+		const FVector& Start,
+		const FVector& End,
+		FHitResult& HitOut,
+		ECollisionChannel CollisionChannel,
+		bool ReturnPhysMat
+	);
+
+	void CallMyTrace();
+
+	void ProcessTraceHit(FHitResult& HitOut);
+
+public:
+//***************************************************************************************************
+//** MYCODE
+//***************************************************************************************************
+
+	/**/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	class APickup* CurrentPickup;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	FString PickupName;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	FString PickupDisplayText;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	bool PickupFound = false;
+
+	void ClearPickupInfo();
+
+protected:
+
+	bool TraceLineSwitch = true;
+	void SwitchTraceLine();
 };
 
