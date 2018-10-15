@@ -145,7 +145,7 @@ void AFIT2097A2Character::SetupPlayerInputComponent(class UInputComponent* Playe
 
 }
 
-void AFIT2097A2Character::OnFire()
+void AFIT2097A2Character::OnFire()	
 {
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
@@ -170,7 +170,7 @@ void AFIT2097A2Character::OnFire()
 				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 				// spawn the projectile at the muzzle
-				//World->SpawnActor<AFIT2097A2Projectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				// World->SpawnActor<AFIT2097A2Projectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 			}
 		}
 	}

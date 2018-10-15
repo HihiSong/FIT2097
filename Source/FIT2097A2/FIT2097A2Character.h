@@ -181,9 +181,13 @@ public:
 
 	void ClearPickupInfo();
 
+
+
 protected:
 
 	bool TraceLineSwitch = true;
 	void SwitchTraceLine();
+
+	
 };
 
