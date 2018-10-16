@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Engine.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Pickup.h"
@@ -181,13 +182,25 @@ public:
 
 	void ClearPickupInfo();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GamePlay)
+	float currentHealth = 80;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GamePlay)
+	float maxHealth = 100;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GamePlay)
+	int numOfKey = 1;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GamePlay)
+	int numOfFuse = 2;
 
 protected:
 
 	bool TraceLineSwitch = true;
 	void SwitchTraceLine();
 
+	bool OpenDoor_Validate(APickup* pickup, APlayerController* m_PlayerContorller) { return true; }
+	void OpenDoor_Implementation();
 	
 };
 

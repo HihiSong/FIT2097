@@ -2,7 +2,9 @@
 
 #pragma once
 
+
 #include "CoreMinimal.h"
+#include "Engine/StaticMeshActor.h"
 #include "GameFramework/Actor.h"
 #include "Pickup.generated.h"
 
@@ -28,21 +30,31 @@ public:
 
 	FString GetPickupDisplayText(){ return DisplayTest;}
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		FString Name;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Property)
+		FString Name = "MR BOX";
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		FString DisplayTest;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Property)
+		FString DisplayTest = "A pickable object";
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(ReplicatedUsing = OnRep_IsActive)
+	bool bIsActive;
+
+	UFUNCTION()
+	virtual void OnRep_IsActive();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
-	
+	UFUNCTION(BlueprintPure)
+		bool IsActive();
+
+	UFUNCTION(BlueprintCallable)
+		void setActive(bool NewState);
 };

@@ -125,6 +125,8 @@ void AFIT2097A2Character::SetupPlayerInputComponent(class UInputComponent* Playe
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFIT2097A2Character::OnFire);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFIT2097A2Character::SwitchTraceLine);
+	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::OpenDoor_Implementation(CurrentPickup, UGameplayStatics::GetPlayerController(GetWorld(),0)));
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::OpenDoor_Implementation);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
@@ -451,6 +453,13 @@ void AFIT2097A2Character::ProcessTraceHit(FHitResult& HitOut)
 		//UE_LOG(LogClass, Warning, TEXT("PickupDisplayText: %s"), *TestPickup->GetPickupDisplayText());
 		PickupDisplayText = TestPickup->GetPickupDisplayText();
 		PickupFound = true;
+
+		//debug
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//GEngine->AddOnScreenDebugMessage(-1,15.0f,FColor::Yellow,PickupName);
+
+
+		
 	}
 	else
 	{
@@ -475,4 +484,24 @@ void AFIT2097A2Character::SwitchTraceLine()
 	{
 		TraceLineSwitch = true;
 	}
+}
+
+void AFIT2097A2Character::OpenDoor_Implementation()
+{
+	//if (Role == ROLE_Authority) 
+	//{
+		if (IsValid(CurrentPickup))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, PickupName);
+			if (PickupName != "")
+			{
+				FOutputDeviceNull ar;
+				CurrentPickup->CallFunctionByNameWithArguments(TEXT("OpenDoor"), ar, NULL, true);
+			}
+			
+		}
+	//}
+	
+	//const FString command = FString::Printf(TEXT("OpenDoor %s"),*Actor->);
+	
 }
