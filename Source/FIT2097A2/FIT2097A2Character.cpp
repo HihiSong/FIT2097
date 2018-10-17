@@ -127,6 +127,8 @@ void AFIT2097A2Character::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFIT2097A2Character::SwitchTraceLine);
 	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::OpenDoor_Implementation(CurrentPickup, UGameplayStatics::GetPlayerController(GetWorld(),0)));
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::OpenDoor_Implementation);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::IncreaseKey);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::IncreaseFuse);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
@@ -493,7 +495,7 @@ void AFIT2097A2Character::OpenDoor_Implementation()
 		if (IsValid(CurrentPickup))
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, PickupName);
-			if (PickupName != "")
+			if (PickupName == "MR DOOR")
 			{
 				FOutputDeviceNull ar;
 				CurrentPickup->CallFunctionByNameWithArguments(TEXT("OpenDoor"), ar, NULL, true);
@@ -506,3 +508,31 @@ void AFIT2097A2Character::OpenDoor_Implementation()
 	
 }
 
+
+void AFIT2097A2Character::IncreaseKey()
+{
+	if (IsValid(CurrentPickup))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, PickupName);
+		if (PickupName == "Key")
+		{
+			numOfKey += 1;
+			//FOutputDeviceNull ar;
+			//CurrentPickup->CallFunctionByNameWithArguments(TEXT("DestroyActor"), ar, NULL, true);
+		}
+	}
+}
+
+void AFIT2097A2Character::IncreaseFuse()
+{
+	if (IsValid(CurrentPickup))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, PickupName);
+		if (PickupName == "Fuse")
+		{
+			numOfFuse += 1;
+			//FOutputDeviceNull ar;
+			//CurrentPickup->CallFunctionByNameWithArguments(TEXT("DestroyActor"), ar, NULL, true);
+		}
+	}
+}
