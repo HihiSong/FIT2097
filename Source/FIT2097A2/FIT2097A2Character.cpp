@@ -505,3 +505,4 @@ void AFIT2097A2Character::OpenDoor_Implementation()
 	//const FString command = FString::Printf(TEXT("OpenDoor %s"),*Actor->);
 	
 }
+

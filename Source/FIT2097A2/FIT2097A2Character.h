@@ -188,11 +188,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GamePlay)
 	float maxHealth = 100;
 
+	void ReduceCurrentHealth(int poisonStrenth) { currentHealth = currentHealth - poisonStrenth; }
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GamePlay)
-	int numOfKey = 1;
+	int numOfKey;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GamePlay)
-	int numOfFuse = 2;
+	int numOfFuse;
 
 protected:
 
