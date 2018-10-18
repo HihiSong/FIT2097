@@ -21,8 +21,3 @@ AFIT2097A2GameMode::AFIT2097A2GameMode()
 
 
 }
-
-void AFIT2097A2GameMode::PoisonGus()
-{
-	
-}

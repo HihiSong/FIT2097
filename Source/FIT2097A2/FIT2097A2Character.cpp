@@ -127,8 +127,8 @@ void AFIT2097A2Character::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFIT2097A2Character::SwitchTraceLine);
 	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::OpenDoor_Implementation(CurrentPickup, UGameplayStatics::GetPlayerController(GetWorld(),0)));
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::OpenDoor_Implementation);
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::IncreaseKey);
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::IncreaseFuse);
+	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::IncreaseKey);
+	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::IncreaseFuse);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
@@ -500,7 +500,42 @@ void AFIT2097A2Character::OpenDoor_Implementation()
 				FOutputDeviceNull ar;
 				CurrentPickup->CallFunctionByNameWithArguments(TEXT("OpenDoor"), ar, NULL, true);
 			}
-			
+			if (PickupName == "Key")
+			{
+				numOfKey += 1;
+				//FOutputDeviceNull ar;
+				//CurrentPickup->CallFunctionByNameWithArguments(TEXT("DestroyActor"), ar, NULL, true);
+			}
+			if (PickupName == "Fuse")
+			{
+				numOfFuse += 1;
+				//FOutputDeviceNull ar;
+				//CurrentPickup->CallFunctionByNameWithArguments(TEXT("DestroyActor"), ar, NULL, true);
+			}
+			if (PickupName == "HealthPack")
+			{
+				currentHealth += 20;
+			}
+			if (PickupName == "MR KEYDOOR")
+			{
+				if (numOfKey >= 1)
+				{
+					FOutputDeviceNull ar;
+					CurrentPickup->CallFunctionByNameWithArguments(TEXT("OpenDoor"), ar, NULL, true);
+					numOfKey -= 1;
+				}
+			}
+			if (PickupName == "MR FUSEDOOR")
+			{
+				if (numOfFuse >= 1)
+				{
+					FOutputDeviceNull ar;
+					CurrentPickup->CallFunctionByNameWithArguments(TEXT("OpenDoor"), ar, NULL, true);
+					numOfFuse -= 1;
+				}
+			}
+
+
 		}
 	//}
 	
@@ -508,7 +543,7 @@ void AFIT2097A2Character::OpenDoor_Implementation()
 	
 }
 
-
+/*
 void AFIT2097A2Character::IncreaseKey()
 {
 	if (IsValid(CurrentPickup))
@@ -535,4 +570,4 @@ void AFIT2097A2Character::IncreaseFuse()
 			//CurrentPickup->CallFunctionByNameWithArguments(TEXT("DestroyActor"), ar, NULL, true);
 		}
 	}
-}
+}*/

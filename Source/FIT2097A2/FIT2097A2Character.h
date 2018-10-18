@@ -204,7 +204,7 @@ protected:
 	bool OpenDoor_Validate(APickup* pickup, APlayerController* m_PlayerContorller) { return true; }
 	void OpenDoor_Implementation();
 	
-	void IncreaseKey();
-	void IncreaseFuse();
+	//void IncreaseKey();
+	//void IncreaseFuse();
 };
 
