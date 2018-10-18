@@ -108,6 +108,7 @@ void AFIT2097A2Character::BeginPlay()
 void AFIT2097A2Character::Tick(float DeltaTime)
 {
 	CallMyTrace();
+	currentHealth -= 0.1f;
 }
 
 //////////////////////////////////////////////////////////////////////////
