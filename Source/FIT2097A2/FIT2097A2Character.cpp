@@ -17,7 +17,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 //////////////////////////////////////////////////////////////////////////
 // AFIT2097A2Character
 
-AFIT2097A2Character::AFIT2097A2Character()
+AFIT2097A2Character::AFIT2097A2Character(const FObjectInitializer& ObjectIntializer)
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
@@ -109,6 +109,7 @@ void AFIT2097A2Character::Tick(float DeltaTime)
 {
 	CallMyTrace();
 	currentHealth -= 0.1f;
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, PickupName);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -127,7 +128,7 @@ void AFIT2097A2Character::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFIT2097A2Character::OnFire);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFIT2097A2Character::SwitchTraceLine);
 	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::OpenDoor_Implementation(CurrentPickup, UGameplayStatics::GetPlayerController(GetWorld(),0)));
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::OpenDoor_Implementation);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::serverFunction);
 	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::IncreaseKey);
 	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFIT2097A2Character::IncreaseFuse);
 
@@ -489,12 +490,12 @@ void AFIT2097A2Character::SwitchTraceLine()
 	}
 }
 
-void AFIT2097A2Character::OpenDoor_Implementation()
+void AFIT2097A2Character::OpenDoor()
 {
 	//if (Role == ROLE_Authority) 
 	//{
-		if (IsValid(CurrentPickup))
-		{
+		//if (IsValid(CurrentPickup))
+		//{
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, PickupName);
 			if (PickupName == "MR DOOR")
 			{
@@ -504,12 +505,16 @@ void AFIT2097A2Character::OpenDoor_Implementation()
 			if (PickupName == "Key")
 			{
 				numOfKey += 1;
+				myDestroy(CurrentPickup);
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Test"));
+
 				//FOutputDeviceNull ar;
 				//CurrentPickup->CallFunctionByNameWithArguments(TEXT("DestroyActor"), ar, NULL, true);
 			}
 			if (PickupName == "Fuse")
 			{
 				numOfFuse += 1;
+				myDestroy(CurrentPickup);
 				//FOutputDeviceNull ar;
 				//CurrentPickup->CallFunctionByNameWithArguments(TEXT("DestroyActor"), ar, NULL, true);
 			}
@@ -535,40 +540,53 @@ void AFIT2097A2Character::OpenDoor_Implementation()
 					numOfFuse -= 1;
 				}
 			}
+			if (PickupName == "MR REMOTEDOOR")
+			{
+					FOutputDeviceNull ar;
+					CurrentPickup->CallFunctionByNameWithArguments(TEXT("OpenDoor"), ar, NULL, true);
+					numOfFuse -= 1;
+			}
 
-
-		}
+		//}
 	//}
 	
 	//const FString command = FString::Printf(TEXT("OpenDoor %s"),*Actor->);
 	
 }
 
-/*
-void AFIT2097A2Character::IncreaseKey()
+
+bool AFIT2097A2Character::serverFunction_Validate() { return true; }
+
+void AFIT2097A2Character::serverFunction_Implementation()
 {
-	if (IsValid(CurrentPickup))
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Call server"));
+
+	if (Role == ROLE_Authority)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, PickupName);
-		if (PickupName == "Key")
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("have auth"));
+		if(CurrentPickup==nullptr)
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("None pointer"));
+
+		if (IsValid(CurrentPickup))
 		{
-			numOfKey += 1;
-			//FOutputDeviceNull ar;
-			//CurrentPickup->CallFunctionByNameWithArguments(TEXT("DestroyActor"), ar, NULL, true);
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("ok"));
+
+			OpenDoor();
+		}
+		else {
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("invalid"));
+
 		}
 	}
 }
 
-void AFIT2097A2Character::IncreaseFuse()
+bool AFIT2097A2Character::myDestroy_Validate(AActor* myActor) { return true; }
+
+void AFIT2097A2Character::myDestroy_Implementation(AActor* myActor)
 {
-	if (IsValid(CurrentPickup))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, PickupName);
-		if (PickupName == "Fuse")
-		{
-			numOfFuse += 1;
-			//FOutputDeviceNull ar;
-			//CurrentPickup->CallFunctionByNameWithArguments(TEXT("DestroyActor"), ar, NULL, true);
+	if (Role == ROLE_Authority) {
+		if (IsValid(myActor)) {
+			myActor->Destroy(true);
 		}
 	}
-}*/
+}

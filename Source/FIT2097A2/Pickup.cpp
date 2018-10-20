@@ -46,6 +46,9 @@ void APickup::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeP
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
 	DOREPLIFETIME(APickup, bIsActive);
+	DOREPLIFETIME(APickup, Name);
+	DOREPLIFETIME(APickup, DisplayTest);
+
 }
 
 bool APickup::IsActive()

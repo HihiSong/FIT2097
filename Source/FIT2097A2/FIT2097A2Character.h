@@ -3,9 +3,9 @@
 #pragma once
 
 #include "Engine.h"
-#include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Pickup.h"
+#include "Net/UnrealNetwork.h"
 #include "FIT2097A2Character.generated.h"
 
 class UInputComponent;
@@ -13,7 +13,7 @@ class UInputComponent;
 UCLASS(config=Game)
 class AFIT2097A2Character : public ACharacter
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
 	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
@@ -201,10 +201,18 @@ protected:
 	bool TraceLineSwitch = true;
 	void SwitchTraceLine();
 
-	bool OpenDoor_Validate(APickup* pickup, APlayerController* m_PlayerContorller) { return true; }
-	void OpenDoor_Implementation();
-	
-	//void IncreaseKey();
-	//void IncreaseFuse();
+	//bool OpenDoor_Validate(APickup* pickup, APlayerController* m_PlayerContorller) { return true; }
+	//bool OpenDoor_Validate() { return true; }
+	//void OpenDoor_Implementation();
+	void OpenDoor();
+
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void serverFunction();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+		void myDestroy(AActor* myActor);
+	/*void serverFunction_Implementation();
+	bool serverFunction_Validate() { return true; }*/
 };
 

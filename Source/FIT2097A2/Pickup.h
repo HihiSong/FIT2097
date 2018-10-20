@@ -30,10 +30,10 @@ public:
 
 	FString GetPickupDisplayText(){ return DisplayTest;}
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Property)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Property, Replicated)
 		FString Name = "MR DOOR";
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Property)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Property, Replicated)
 		FString DisplayTest = "A pickable object";
 
 protected:
