@@ -188,30 +188,36 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GamePlay)
 	float maxHealth = 100;
 
-	void ReduceCurrentHealth(int poisonStrenth) { currentHealth = currentHealth - poisonStrenth; }
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GamePlay)
-	int numOfKey;
+	int numOfKey = 0;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GamePlay)
-	int numOfFuse;
+	int numOfFuse = 0;
 
+	void clientFunction();
 protected:
 
 	bool TraceLineSwitch = true;
 	void SwitchTraceLine();
 
+
+
 	//bool OpenDoor_Validate(APickup* pickup, APlayerController* m_PlayerContorller) { return true; }
 	//bool OpenDoor_Validate() { return true; }
 	//void OpenDoor_Implementation();
-	void OpenDoor();
+	
 
+	
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void serverFunction();
 
 	UFUNCTION(Server, Reliable, WithValidation)
-		void myDestroy(AActor* myActor);
+	void myDestroy(AActor* myActor);
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void OpenDoor(AActor* myActor);
+
 	/*void serverFunction_Implementation();
 	bool serverFunction_Validate() { return true; }*/
 };
